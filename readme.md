@@ -1,7 +1,7 @@
-This vim bundle adds syntax highlighting for [.less]. It's based on [leafo's vim resource][leafo]. This README is also heavily inspired by [vim-coffee-script].
+This vim bundle adds syntax highlighting for [.twif]. It's based on [Alex Suraci's twig.vim][twigvim]. This README is also heavily inspired by [vim-coffee-script].
 
-[.less]: http://lesscss.org/
-[leafo]: http://leafo.net/lessphp/vim/
+[.twig]: http://twig.sensiolabs.org/
+[leafo]: http://darcsden.com/daniel/dotfiles/browse/.vim/syntax/twig.vim
 [vim-coffee-script]: https://github.com/kchmck/vim-coffee-script
 
 ### Installing and Using
@@ -28,21 +28,20 @@ This vim bundle adds syntax highlighting for [.less]. It's based on [leafo's vim
         $ mkdir -p ~/.vim/bundle
         $ cd ~/.vim/bundle
 
-3. Make a clone of the `vim-less` repository:
-
-        $ git clone git://github.com/lunaru/vim-less.git
+3. Make a clone of the `vim-twig` repository:
+        $ git clone git://github.com/lunaru/vim-twig.git
         [...]
         $ ls
-        vim-less/
+        vim-twig/
 
-That's it. Pathogen should handle the rest. Opening a file with a `.less`
+That's it. Pathogen should handle the rest. Opening a file with a `.twig`
 extension will load everything.
 
 ### Updating
 
-1. Change into the `~/.vim/bundle/vim-less/` directory:
+1. Change into the `~/.vim/bundle/vim-twig/` directory:
 
-        $ cd ~/.vim/bundle/vim-less
+        $ cd ~/.vim/bundle/vim-twig
 
 2. Pull in the latest changes:
 
