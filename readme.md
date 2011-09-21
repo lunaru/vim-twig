@@ -1,7 +1,7 @@
-This vim bundle adds syntax highlighting for [.twif]. It's based on [Alex Suraci's twig.vim][twigvim]. This README is also heavily inspired by [vim-coffee-script].
+This vim bundle adds syntax highlighting for [.twig]. It's based on [Alex Suraci's twig.vim][twigvim]. This README is also heavily inspired by [vim-coffee-script].
 
 [.twig]: http://twig.sensiolabs.org/
-[leafo]: http://darcsden.com/daniel/dotfiles/browse/.vim/syntax/twig.vim
+[twigvim]: http://darcsden.com/daniel/dotfiles/browse/.vim/syntax/twig.vim
 [vim-coffee-script]: https://github.com/kchmck/vim-coffee-script
 
 ### Installing and Using
