@@ -1,18 +1,23 @@
 " Vim syntax file
-" Language:	Twig template
-" Maintainer:	Alex Suraci <i.am@toogeneric.com>
-" Last Change:	2008 Sep 28
+" Language:     Twig template
+" Maintainer:   Gabriel Gosselin <gabrielNOSPAM@evidens.ca>
+" Last Change:  2011 July 27
 " Version:      1.0
-
-if version < 600
-  syntax clear
-elseif exists("b:current_syntax")
-  finish
-endif
+"
+" Based Jinja syntax by:  Armin Ronacher <armin.ronacher@active-4.com>
+" 
+" Known Bugs:
+"   because of odd limitations dicts and the modulo operator
+"   appear wrong in the template.
+"
+" Changes:
+"
+"     2008 May 9:     Added support for Jinja2 changes (new keyword rules)
+"     2011 July 27:   Changed all references of jinja tp twig
 
 syntax case match
 
-" Twig template built-in tags and parameters (without filter, macro, is and raw, they
+" Jinja template built-in tags and parameters (without filter, macro, is and raw, they
 " have special threatment)
 syn keyword twigStatement containedin=twigVarBlock,twigTagBlock,twigNested contained and if else in not or recursive as import
 
@@ -30,32 +35,29 @@ syn match twigFilter contained skipwhite /[a-zA-Z_][a-zA-Z0-9_]*/
 syn match twigFunction contained skipwhite /[a-zA-Z_][a-zA-Z0-9_]*/
 syn match twigBlockName contained skipwhite /[a-zA-Z_][a-zA-Z0-9_]*/
 
-" Twig template constants
+" Jinja template constants
 syn region twigString containedin=twigVarBlock,twigTagBlock,twigNested contained start=/"/ skip=/\\"/ end=/"/
 syn region twigString containedin=twigVarBlock,twigTagBlock,twigNested contained start=/'/ skip=/\\'/ end=/'/
 syn match twigNumber containedin=twigVarBlock,twigTagBlock,twigNested contained /[0-9]\+\(\.[0-9]\+\)\?/
 
 " Operators
-"syn match twigOperator containedin=twigVarBlock,twigTagBlock,twigNested contained /[+\-*\/<>=!,:]/
+syn match twigOperator containedin=twigVarBlock,twigTagBlock,twigNested contained /[+\-*\/<>=!,:]/
 syn match twigPunctuation containedin=twigVarBlock,twigTagBlock,twigNested contained /[()\[\]]/
 syn match twigOperator containedin=twigVarBlock,twigTagBlock,twigNested contained /\./ nextgroup=twigAttribute
-syn match twigVar /\$/ nextgroup=twigAttribute containedin=ALLBUT,twigTagBlock,twigVarBlock,twigRaw,twigString,twigNested,twigComment
-syn match twigAttribute contained /[a-zA-Z_][a-zA-Z0-9_]*/ nextgroup=twigOperator
+syn match twigAttribute contained /[a-zA-Z_][a-zA-Z0-9_]*/
 
-" Twig template tag and variable blocks
+" Jinja template tag and variable blocks
 syn region twigNested matchgroup=twigOperator start="(" end=")" transparent display containedin=twigVarBlock,twigTagBlock,twigNested contained
 syn region twigNested matchgroup=twigOperator start="\[" end="\]" transparent display containedin=twigVarBlock,twigTagBlock,twigNested contained
-"syn region twigNested matchgroup=twigOperator start="{" end="}" transparent display containedin=twigVarBlock,twigTagBlock,twigNested contained
+syn region twigNested matchgroup=twigOperator start="{" end="}" transparent display containedin=twigVarBlock,twigTagBlock,twigNested contained
 syn region twigTagBlock matchgroup=twigTagDelim start=/{%-\?/ end=/-\?%}/ skipwhite containedin=ALLBUT,twigTagBlock,twigVarBlock,twigRaw,twigString,twigNested,twigComment
 
-syn region twigVarBlock matchgroup=twigVarDelim start=/\${/ end=/}/ containedin=ALLBUT,twigTagBlock,twigVarBlock,twigRaw,twigString,twigNested,twigComment
-"syn region twigVarBlock matchgroup=twigVarDelim start=/$[a-zA-Z_]/ end=/[^a-zA-Z0-9.]/ containedin=ALLBUT,twigTagBlock,twigVarBlock,twigRaw,twigString,twigNested,twigComment
+syn region twigVarBlock matchgroup=twigVarDelim start=/{{-\?/ end=/-\?}}/ containedin=ALLBUT,twigTagBlock,twigVarBlock,twigRaw,twigString,twigNested,twigComment
 
+" Jinja template 'raw' tag
+syn region twigRaw matchgroup=twigRawDelim start="{%\s*raw\s*%}" end="{%\s*endraw\s*%}" containedin=ALLBUT,twigTagBlock,twigVarBlock,twigString,twigComment
 
-" Twig template 'raw' tag
-"syn region twigRaw matchgroup=twigRawDelim start="{%\s*raw\s*%}" end="{%\s*endraw\s*%}" containedin=ALLBUT,twigTagBlock,twigVarBlock,twigString,twigComment
-
-" Twig comments
+" Jinja comments
 syn region twigComment matchgroup=twigCommentDelim start="{#" end="#}" containedin=ALLBUT,twigTagBlock,twigVarBlock,twigString
 
 " Block start keywords.  A bit tricker.  We only highlight at the start of a
@@ -64,7 +66,7 @@ syn region twigComment matchgroup=twigCommentDelim start="{#" end="#}" contained
 syn match twigStatement containedin=twigTagBlock contained skipwhite /\({%-\?\s*\)\@<=\<[a-zA-Z_][a-zA-Z0-9_]*\>\(\s*[,=]\)\@!/
 
 " and context modifiers
-"syn match twigStatement containedin=twigTagBlock contained /\<with\(out\)\?\s\+context\>/ skipwhite
+syn match twigStatement containedin=twigTagBlock contained /\<with\(out\)\?\s\+context\>/ skipwhite
 
 
 " Define the default highlighting.
@@ -89,19 +91,37 @@ if version >= 508 || !exists("did_twig_syn_inits")
 
   HiLink twigSpecial Special
   HiLink twigOperator Normal
-  "HiLink twigRaw Normal
+  HiLink twigRaw Normal
   HiLink twigTagBlock PreProc
   HiLink twigVarBlock PreProc
   HiLink twigStatement Statement
   HiLink twigFilter Function
   HiLink twigBlockName Function
   HiLink twigVariable Identifier
-  HiLink twigVar Identifier
   HiLink twigString Constant
   HiLink twigNumber Constant
   HiLink twigComment Comment
 
   delcommand HiLink
+endif
+
+if version < 600
+  syntax clear
+elseif exists("b:current_syntax")
+  finish
+endif
+
+if !exists("main_syntax")
+  let main_syntax = 'html'
+endif
+
+if version < 600
+  so <sfile>:p:h/jinja.vim
+  so <sfile>:p:h/html.vim
+else
+  runtime! syntax/jinja.vim
+  runtime! syntax/html.vim
+  unlet b:current_syntax
 endif
 
 let b:current_syntax = "twig"
